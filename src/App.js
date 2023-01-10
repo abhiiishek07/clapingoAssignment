@@ -1,24 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Navbar from "./Components/Navbar/Navbar";
+import Homepage from "./Components/HomePage/Homepage";
+import Footer from "./Components/Footer/Footer";
+import Login from "./Pages/Login";
+import Dummy from "./Pages/Dummy";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 function App() {
+  let userID = useSelector((state) => state.auth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        {userID === null ? (
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <>
+                  <Navbar />
+                  <Login />
+                </>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Navbar />
+                  <Homepage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route
+              path="/dummy"
+              element={
+                <>
+                  <Navbar />
+                  <Dummy />
+                </>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Navbar />
+                  <Homepage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        )}
+      </BrowserRouter>
+    </>
   );
 }
 
